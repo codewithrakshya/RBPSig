@@ -25,7 +25,7 @@ def generate_fastq_files(sra_numbers, download_directory):
         fastq_dump_command = [
             'fastq-dump', '--outdir', f"{download_directory}/fastq", '--gzip',
             '--skip-technical', '--readids', '--read-filter', 'pass', '--dumpbase',
-            '--split-3', '--clip', sra_file_path
+            '--split-files', '--clip', sra_file_path  # Use '--split-files' to split paired reads into separate files
         ]
         print(f"The command used was: {' '.join(fastq_dump_command)}")
         subprocess.run(fastq_dump_command, check=True)
