@@ -1,3 +1,37 @@
+"""
+This script automates the process of downloading sequence read archive (SRA) files based on a list of accession IDs and
+converting them into FASTQ format. It is designed to facilitate large-scale data retrieval and conversion for bioinformatics
+analyses, streamlining the initial steps of data preparation.
+
+The script operates in two main stages:
+1. Downloading SRA files: It reads a list of SRA accession IDs from a specified file (skipping the header line), and uses the
+   `prefetch` command from the SRA Toolkit to download each SRA file into a designated download directory.
+2. Generating FASTQ files: For each downloaded SRA file, the script then uses the `fastq-dump` command, also from the SRA
+   Toolkit, to convert SRA files into compressed FASTQ files. It supports splitting paired-end reads into separate files and
+   applies several other options to optimize the output for subsequent analysis.
+
+Requirements:
+- A file containing SRA accession IDs, one per line with a header line.
+- The SRA Toolkit installed and available in the system's PATH. This includes both `prefetch` and `fastq-dump` utilities.
+
+Usage:
+    python this_script.py <accession_file_path> <download_directory>
+
+Where:
+- `<accession_file_path>` is the path to the text file containing SRA accession IDs to download. The file should contain one
+  ID per line, with the first line being a header that will be skipped by the script.
+- `<download_directory>` is the path to the directory where SRA files will be downloaded and where the FASTQ files will be
+  stored after conversion. The script organizes FASTQ files in a subdirectory within this directory.
+
+Example Command:
+    python this_script.py accession_ids.txt /path/to/download_directory
+
+The script prints messages to the console to inform the user of its progress, including the accession ID currently being
+processed and the specific commands being executed.
+
+Note: Ensure sufficient disk space is available in the specified download directory, as SRA and FASTQ files can be large.
+"""
+
 import subprocess
 import argparse
 import os
