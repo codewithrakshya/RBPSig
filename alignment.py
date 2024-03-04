@@ -20,7 +20,7 @@ decompression or alignment. This feedback can be useful for troubleshooting and 
 successfully.
 
 Usage:
-    python align_reads_with_star.py --star-path /path/to/STAR \
+    python alignment.py --star-path /path/to/STAR \
                                     --genomeDir /path/to/genomeIndex \
                                     --readFilesIn /path/to/read1.fastq /path/to/read2.fastq ... \
                                     --output-dir /path/to/outputDirectory
@@ -35,8 +35,10 @@ import subprocess
 import argparse
 import os
 import logging
+import glob
 
 def decompress_files(files):
+    """Decompress .gz FASTQ files if necessary."""
     decompressed_files = []
     for file in files:
         if file.endswith('.gz'):
@@ -55,45 +57,60 @@ def decompress_files(files):
             decompressed_files.append(file)
     return decompressed_files
 
+def find_bam_file(directory):
+    """Find the first BAM file in the given directory."""
+    bam_files = glob.glob(os.path.join(directory, '*.bam'))
+    if bam_files:
+        return bam_files[0]  # Return the first BAM file found
+    else:
+        return None
+
+def write_bam_manifest(manifest_data, output_dir_base):
+    """Append BAM file details to the manifest."""
+    manifest_path = os.path.join(output_dir_base, 'bam_manifest.txt')
+    with open(manifest_path, 'a') as manifest_file:
+        for accession_id, bam_path in manifest_data:
+            manifest_file.write(f"{accession_id}\t{bam_path}\n")
+    logging.info("BAM manifest updated with new entries.")
+
 def align_reads(star_path, genome_dir, read_files, output_dir_base):
-    # Decompress input FASTQ files if they are in .gz format
     read_files = decompress_files(read_files)
     
-    # Ensure the base output directory exists (e.g., 'star_output/')
     if not os.path.exists(output_dir_base):
         os.makedirs(output_dir_base)
+       
+    bam_manifest_data = []
     
     for i in range(0, len(read_files), 2):  # Assuming pairs of read files
         pair = read_files[i:i+2]
-        accession_id = os.path.basename(pair[0]).split('_')[0]  # Extract accession ID from filename
+        accession_id = os.path.basename(pair[0]).split('_')[0]
         
-        # Update to create an accession ID subdirectory within the base output directory
         output_subdir = os.path.join(output_dir_base, accession_id)
         if not os.path.exists(output_subdir):
             os.makedirs(output_subdir)
         
-        # Construct the STAR command
         star_command = [
-            star_path,  # Path to STAR executable
-            '--runThreadN', '10',  # Number of threads
-            '--genomeDir', genome_dir,  # Path to the STAR genome index directory
+            star_path,
+            '--runThreadN', '10',
+            '--genomeDir', genome_dir,
             '--readFilesIn'
+        ] + pair + [
+            '--outFileNamePrefix', os.path.join(output_subdir, ''),
+            '--outSAMtype', 'BAM', 'SortedByCoordinate'
         ]
-        star_command.extend(pair)  # Add paths to input FASTQ files for this pair
         
-        # Update to use the new output subdirectory for the --outFileNamePrefix option
-        star_command.extend(['--outFileNamePrefix', os.path.join(output_subdir, '')])  # Ensures output files are prefixed properly within the subdirectory
-        
-        # Specify BAM output format
-        star_command.extend(['--outSAMtype', 'BAM', 'SortedByCoordinate'])
-        
-        # Execute the STAR command
         logging.info(f"Running STAR alignment for {accession_id} with command: {' '.join(star_command)}")
         try:
             subprocess.run(star_command, check=True)
+            bam_file_path = find_bam_file(output_subdir)
+            if bam_file_path:
+                bam_manifest_data.append((accession_id, bam_file_path))
+            else:
+                logging.error(f"No BAM file found for {accession_id} in {output_subdir}")
         except subprocess.CalledProcessError as e:
             logging.error(f"STAR alignment for {accession_id} failed: {e}")
-
+    
+    write_bam_manifest(bam_manifest_data, output_dir_base)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)

@@ -1,6 +1,6 @@
 # This file was produced by samtools stats (1.13+htslib-1.13+ds) and can be plotted using plot-bamstats
 # This file contains statistics for all reads.
-# The command line was:  stats star_output/SRR12801023/Aligned.sortedByCoord.out.bam
+# The command line was:  stats star_output_02.28.24/SRR12801023/Aligned.sortedByCoord.out.bam
 # CHK, Checksum	[2]Read Names	[3]Sequences	[4]Qualities
 # CHK, CRC32 of reads which passed filtering followed by addition (32bit overflow)
 CHK	eaecc4f3	9f4fc6b7	86758544

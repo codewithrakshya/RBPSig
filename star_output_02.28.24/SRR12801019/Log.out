@@ -2,14 +2,14 @@ STAR version=2.7.10a
 STAR compilation time,server,dir=2022-01-14T18:50:00-05:00 :/home/dobin/data/STAR/STARcode/STAR.master/source
 STAR git: On branch master ; commit ae26add7ea1724f3281ec8abedb71bcff6a4ae73 ; diff files: CHANGES.md README.md RELEASEnotes.md doc/STARmanual.pdf extras/doc-latex/STARmanual.tex extras/doc-latex/convertParDefToLatexTable.awk extras/doc-latex/parametersDefault.tex extras/docker/Dockerfile source/VERSION 
 ##### Command Line:
-/private/groups/brookslab/bin/STAR-2.7.10a/bin/Linux_x86_64/STAR --runThreadN 10 --genomeDir /private/groups/brookslab/reference_indices/star_hg38_rausharm --readFilesIn /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_1.fastq /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_2.fastq --outFileNamePrefix /private/groups/brookslab/rausharm/RBPSig/star_output/SRR12801019/ --outSAMtype BAM SortedByCoordinate
+/private/groups/brookslab/bin/STAR-2.7.10a/bin/Linux_x86_64/STAR --runThreadN 10 --genomeDir /private/groups/brookslab/reference_indices/star_hg38_rausharm --readFilesIn /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_1.fastq /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_2.fastq --outFileNamePrefix /private/groups/brookslab/rausharm/RBPSig/star_output_02.28.24/SRR12801019/ --outSAMtype BAM SortedByCoordinate
 ##### Initial USER parameters from Command Line:
-outFileNamePrefix                 /private/groups/brookslab/rausharm/RBPSig/star_output/SRR12801019/
+outFileNamePrefix                 /private/groups/brookslab/rausharm/RBPSig/star_output_02.28.24/SRR12801019/
 ###### All USER parameters from Command Line:
 runThreadN                    10     ~RE-DEFINED
 genomeDir                     /private/groups/brookslab/reference_indices/star_hg38_rausharm     ~RE-DEFINED
 readFilesIn                   /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_1.fastq   /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_2.fastq        ~RE-DEFINED
-outFileNamePrefix             /private/groups/brookslab/rausharm/RBPSig/star_output/SRR12801019/     ~RE-DEFINED
+outFileNamePrefix             /private/groups/brookslab/rausharm/RBPSig/star_output_02.28.24/SRR12801019/     ~RE-DEFINED
 outSAMtype                    BAM   SortedByCoordinate        ~RE-DEFINED
 ##### Finished reading parameters from all sources
 
@@ -17,12 +17,12 @@ outSAMtype                    BAM   SortedByCoordinate        ~RE-DEFINED
 runThreadN                        10
 genomeDir                         /private/groups/brookslab/reference_indices/star_hg38_rausharm
 readFilesIn                       /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_1.fastq   /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_2.fastq   
-outFileNamePrefix                 /private/groups/brookslab/rausharm/RBPSig/star_output/SRR12801019/
+outFileNamePrefix                 /private/groups/brookslab/rausharm/RBPSig/star_output_02.28.24/SRR12801019/
 outSAMtype                        BAM   SortedByCoordinate   
 
 -------------------------------
 ##### Final effective command line:
-/private/groups/brookslab/bin/STAR-2.7.10a/bin/Linux_x86_64/STAR   --runThreadN 10   --genomeDir /private/groups/brookslab/reference_indices/star_hg38_rausharm   --readFilesIn /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_1.fastq   /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_2.fastq      --outFileNamePrefix /private/groups/brookslab/rausharm/RBPSig/star_output/SRR12801019/   --outSAMtype BAM   SortedByCoordinate   
+/private/groups/brookslab/bin/STAR-2.7.10a/bin/Linux_x86_64/STAR   --runThreadN 10   --genomeDir /private/groups/brookslab/reference_indices/star_hg38_rausharm   --readFilesIn /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_1.fastq   /private/groups/brookslab/scratch/rausharm/sra_acc.02.09.24/fastq/SRR12801019_pass_2.fastq      --outFileNamePrefix /private/groups/brookslab/rausharm/RBPSig/star_output_02.28.24/SRR12801019/   --outSAMtype BAM   SortedByCoordinate   
 ----------------------------------------
 
 Number of fastq files for each mate = 1
@@ -507,7 +507,7 @@ Number of real (reference) chromosomes= 455
 454	chrY	57227415	3222274048
 455	chrY_KI270740v1_random	37240	3279683584
 --sjdbOverhang = 100 taken from the generated genome
-Started loading the genome: Mon Feb 19 13:54:51 2024
+Started loading the genome: Wed Feb 28 15:21:24 2024
 
 Genome: size given as a parameter = 3356997872
 SA: size given as a parameter = 25789372813
@@ -521,7 +521,7 @@ Loading Genome ... done! state: good=1 eof=0 fail=0 bad=0; loaded 3356997872 byt
 SA file size: 25789372813 bytes; state: good=1 eof=0 fail=0 bad=0
 Loading SA ... done! state: good=1 eof=0 fail=0 bad=0; loaded 25789372813 bytes
 Loading SAindex ... done: 1565873619 bytes
-Finished loading the genome: Mon Feb 19 13:55:12 2024
+Finished loading the genome: Wed Feb 28 15:21:56 2024
 
 Processing splice junctions database sjdbN=383344,   pGe.sjdbOverhang=100 
 alignIntronMax=alignMatesGapMax=0, the max intron size will be approximately determined by (2^winBinNbits)*winAnchorDistNbins=589824
@@ -534,76 +534,76 @@ Created thread # 6
 Created thread # 7
 Created thread # 8
 Created thread # 9
-BAM sorting: 205417 mapped reads
+BAM sorting: 206152 mapped reads
 BAM sorting bins genomic start loci:
-1	0	28742753
-2	0	74206507
-3	0	150334969
-4	0	202445129
-5	1	17233647
-6	1	119147843
-7	2	62559737
-8	2	116852224
-9	4	49269572
-10	4	98601414
-11	5	27258947
-12	6	58273884
-13	15	60382421
-14	17	1962253
-15	17	31074578
-16	19	7240833
-17	19	42477736
-18	19	75628943
-19	24	583173
-20	24	18571879
-21	24	54459537
-22	34	73240486
-23	34	189873341
-24	35	32122804
-25	36	8216687
-26	36	8400878
-27	36	36966013
-28	37	39313274
-29	40	134851
-30	49	41233663
-31	49	131384182
-32	51	68337895
-33	53	40832481
-34	53	149369146
-35	55	18226173
-36	55	70860573
-37	55	149661865
-38	56	73607237
-39	56	157223311
-40	57	143655940
-41	58	109137453
-42	112	1053905
-43	311	129385
-44	324	3910
-45	324	9425
-46	428	117074
-47	452	47142390
-48	452	101391533
+1	0	28334456
+2	0	70205728
+3	0	150575198
+4	0	201877055
+5	1	27116075
+6	1	124089720
+7	2	62571078
+8	2	119044768
+9	4	49838714
+10	4	101723231
+11	5	27256324
+12	6	55065834
+13	15	52124516
+14	17	1962166
+15	17	30900983
+16	19	5441718
+17	19	41757730
+18	19	74772044
+19	23	68676253
+20	24	17725964
+21	24	52194685
+22	34	70988225
+23	34	182777843
+24	35	21755460
+25	36	8216353
+26	36	8400585
+27	36	32748665
+28	37	38506187
+29	40	134566
+30	49	39411752
+31	49	129088956
+32	51	56460941
+33	53	37065007
+34	53	142001565
+35	55	12013348
+36	55	47607972
+37	55	135300509
+38	56	64343651
+39	56	151080234
+40	57	116851048
+41	58	99230407
+42	67	122332
+43	310	2936420
+44	324	3455
+45	324	9283
+46	428	116194
+47	452	41201198
+48	452	101009749
 Thread #9 end of input stream, nextChar=-1
+Completed: thread #6
+Completed: thread #8
 Completed: thread #3
+Completed: thread #4
 Completed: thread #5
-Completed: thread #2
 Completed: thread #1
+Completed: thread #9
 Completed: thread #7
 Completed: thread #0
 Joined thread # 1
+Completed: thread #2
 Joined thread # 2
 Joined thread # 3
-Completed: thread #4
 Joined thread # 4
 Joined thread # 5
-Completed: thread #8
-Completed: thread #6
 Joined thread # 6
 Joined thread # 7
 Joined thread # 8
-Completed: thread #9
 Joined thread # 9
-Feb 19 14:00:54 ..... started sorting BAM
-Max memory needed for sorting = 441780747
+Feb 28 15:31:46 ..... started sorting BAM
+Max memory needed for sorting = 443573203
 ALL DONE!

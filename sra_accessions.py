@@ -15,7 +15,7 @@ Requirements:
 - The SRA Toolkit installed and available in the system's PATH. This includes both `prefetch` and `fastq-dump` utilities.
 
 Usage:
-    python this_script.py <accession_file_path> <download_directory>
+    python sra_accessions.py <accession_file_path> <download_directory>
 
 Where:
 - `<accession_file_path>` is the path to the text file containing SRA accession IDs to download. The file should contain one
@@ -24,7 +24,7 @@ Where:
   stored after conversion. The script organizes FASTQ files in a subdirectory within this directory.
 
 Example Command:
-    python this_script.py accession_ids.txt /path/to/download_directory
+    python sra_accrssions.py accession_ids.txt /path/to/download_directory
 
 The script prints messages to the console to inform the user of its progress, including the accession ID currently being
 processed and the specific commands being executed.
