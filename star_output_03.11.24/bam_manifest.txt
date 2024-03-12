@@ -1,0 +1,4 @@
+SRR12801019	/private/groups/brookslab/rausharm/RBPSig/star_output_03.11.24/SRR12801019/SRR12801019_Aligned.sortedByCoord.out.bam	DefaultMetadata	DefaultCondition
+SRR12801020	/private/groups/brookslab/rausharm/RBPSig/star_output_03.11.24/SRR12801020/SRR12801020_Aligned.sortedByCoord.out.bam	DefaultMetadata	DefaultCondition
+SRR12801023	/private/groups/brookslab/rausharm/RBPSig/star_output_03.11.24/SRR12801023/SRR12801023_Aligned.sortedByCoord.out.bam	DefaultMetadata	DefaultCondition
+SRR12801024	/private/groups/brookslab/rausharm/RBPSig/star_output_03.11.24/SRR12801024/SRR12801024_Aligned.sortedByCoord.out.bam	DefaultMetadata	DefaultCondition

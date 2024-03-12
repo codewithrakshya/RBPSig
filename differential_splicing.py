@@ -1,42 +1,50 @@
-import argparse
 import subprocess
+import argparse
 
-def parse_arguments():
-    parser = argparse.ArgumentParser(description='Process files for genomic analysis.')
-    parser.add_argument('-g', '--genome', required=True, help='Path to the genome file')
-    parser.add_argument('-m', '--manifest', required=True, help='Path to the manifest file')
-    parser.add_argument('-a', '--annotations', required=True, help='Path to the annotations file')
-    parser.add_argument('-o', '--output_prefix', required=True, help='Output prefix for files')
-    return parser.parse_args()
+def run_mesa_bam_to_junc_bed(manifest, annotations, genome, output_prefix, n_threads):
+    """Executes the mesa bam_to_junc_bed command with specified arguments."""
+    command = [
+        'mesa', 'bam_to_junc_bed',
+        '-m', manifest,
+        '-a', annotations,
+        '-g', genome,
+        '-o', output_prefix,
+        '-n', str(n_threads)
+    ]
 
-def bam_to_junc_bed(genome, manifest, annotations, output_prefix):
-    command = f"mesa bam_to_junc_bed -m '{manifest}' -a '{annotations}' -g '{genome}' -o '{output_prefix}' -n 10"
-    print("Running bam_to_junc_bed command:", command)
     try:
-        subprocess.run(command, shell=True, check=True)
-        print("bam_to_junc_bed command executed successfully.")
+        subprocess.run(command, check=True)
+        print(f"Command executed successfully. Output files are prefixed with: {output_prefix}")
     except subprocess.CalledProcessError as e:
-        print("Failed to execute bam_to_junc_bed command:", e)
-        raise
+        print(f"Failed to execute command: {e}")
 
-def quant(output_prefix):
+def run_mesa_quant(manifest, output_prefix):
+    """Executes the mesa quant command with the specified manifest file."""
+    command = [
+        'mesa', 'quant',
+        '-m', manifest,
+        '-o', output_prefix
+    ]
 
-    command = f"mesa quant -i '{output_prefix}.txt' -o '{output_prefix}_quant_output'"
-    print("Running quant command:", command)
     try:
-        subprocess.run(command, shell=True, check=True)
-        print("Quant command executed successfully.")
+        subprocess.run(command, check=True)
+        print(f"mesa quant command executed successfully. Output files are prefixed with: {output_prefix}")
     except subprocess.CalledProcessError as e:
-        print("Failed to execute quant command:", e)
-        raise
-
-def main():
-    args = parse_arguments()
-    try:
-        bam_to_junc_bed(args.genome, args.manifest, args.annotations, args.output_prefix)
-        quant(args.output_prefix)
-    except Exception as e:
-        print(f"An error occurred during processing: {e}")
+        print(f"Failed to execute mesa quant command: {e}")
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Run mesa bam_to_junc_bed and quant directly from command line arguments.")
+    parser.add_argument("--genome", required=True, help="Path to the genome FASTA file")
+    parser.add_argument("--manifest", required=True, help="Path to the manifest file")
+    parser.add_argument("--annotations", required=True, help="Path to the annotations GTF file")
+    parser.add_argument("--output-prefix", required=True, help="Output prefix for the .bed files")
+    parser.add_argument("--n-threads", type=int, default=10, help="Number of threads")
+
+    args = parser.parse_args()
+
+    # Always run bam_to_junc_bed
+    run_mesa_bam_to_junc_bed(args.manifest, args.annotations, args.genome, args.output_prefix, args.n_threads)
+
+
+    quant_manifest = f"{args.output_prefix}_manifest.txt"
+    run_mesa_quant(quant_manifest, args.output_prefix)

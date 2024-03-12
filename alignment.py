@@ -65,13 +65,13 @@ def find_bam_file(directory):
     else:
         return None
 
-def write_bam_manifest(manifest_data, output_dir_base):
-    """Append BAM file details to the manifest."""
+def write_bam_manifest(manifest_data, output_dir_base, metadata="PlaceholderMetadata", condition="PlaceholderCondition"):
     manifest_path = os.path.join(output_dir_base, 'bam_manifest.txt')
     with open(manifest_path, 'a') as manifest_file:
         for accession_id, bam_path in manifest_data:
-            manifest_file.write(f"{accession_id}\t{bam_path}\n")
+            manifest_file.write(f"{accession_id}\t{bam_path}\t{metadata}\t{condition}\n")
     logging.info("BAM manifest updated with new entries.")
+
 
 def align_reads(star_path, genome_dir, read_files, output_dir_base):
     read_files = decompress_files(read_files)
@@ -89,13 +89,16 @@ def align_reads(star_path, genome_dir, read_files, output_dir_base):
         if not os.path.exists(output_subdir):
             os.makedirs(output_subdir)
         
+        # Modified line: Append accession ID to the output prefix to include it in the BAM file name
+        outFileNamePrefix = os.path.join(output_subdir, accession_id + "_")
+        
         star_command = [
             star_path,
             '--runThreadN', '10',
             '--genomeDir', genome_dir,
             '--readFilesIn'
         ] + pair + [
-            '--outFileNamePrefix', os.path.join(output_subdir, ''),
+            '--outFileNamePrefix', outFileNamePrefix,
             '--outSAMtype', 'BAM', 'SortedByCoordinate'
         ]
         
@@ -110,7 +113,8 @@ def align_reads(star_path, genome_dir, read_files, output_dir_base):
         except subprocess.CalledProcessError as e:
             logging.error(f"STAR alignment for {accession_id} failed: {e}")
     
-    write_bam_manifest(bam_manifest_data, output_dir_base)
+    write_bam_manifest(bam_manifest_data, args.output_dir, args.metadata, args.condition)
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
@@ -120,9 +124,13 @@ if __name__ == "__main__":
     parser.add_argument("--genomeDir", required=True, help="Path to the STAR genome index directory")
     parser.add_argument("--readFilesIn", nargs='+', required=True, help="Paths to input FASTQ files")
     parser.add_argument("--output-dir", required=True, help="Base directory for saving the alignment results")
+    # Add optional arguments for metadata and condition
+    parser.add_argument("--metadata", required=False, default="DefaultMetadata", help="Metadata associated with the run")
+    parser.add_argument("--condition", required=False, default="DefaultCondition", help="Condition associated with the run")
     
     args = parser.parse_args()
     
     align_reads(args.star_path, args.genomeDir, args.readFilesIn, args.output_dir)
     
     logging.info("Alignment completed.")
+
