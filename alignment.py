@@ -65,7 +65,7 @@ def find_bam_file(directory):
     else:
         return None
 
-def write_bam_manifest(manifest_data, output_dir_base, metadata="PlaceholderMetadata", condition="PlaceholderCondition"):
+def write_bam_manifest(manifest_data, output_dir_base, metadata, condition):
     manifest_path = os.path.join(output_dir_base, 'bam_manifest.txt')
     with open(manifest_path, 'a') as manifest_file:
         for accession_id, bam_path in manifest_data:
@@ -73,35 +73,35 @@ def write_bam_manifest(manifest_data, output_dir_base, metadata="PlaceholderMeta
     logging.info("BAM manifest updated with new entries.")
 
 
-def align_reads(star_path, genome_dir, read_files, output_dir_base):
+def align_reads(star_path, genome_dir, read_files, output_dir_base, is_paired, metadata, condition):
     read_files = decompress_files(read_files)
-    
     if not os.path.exists(output_dir_base):
         os.makedirs(output_dir_base)
-       
+
     bam_manifest_data = []
-    
-    for i in range(0, len(read_files), 2):  # Assuming pairs of read files
-        pair = read_files[i:i+2]
+
+    if is_paired:
+        # Assuming pairs of read files
+        file_pairs = zip(read_files[::2], read_files[1::2])
+    else:
+        # Treating each file as unpaired
+        file_pairs = [(f,) for f in read_files]
+
+    for pair in file_pairs:
         accession_id = os.path.basename(pair[0]).split('_')[0]
-        
         output_subdir = os.path.join(output_dir_base, accession_id)
-        if not os.path.exists(output_subdir):
-            os.makedirs(output_subdir)
-        
-        # Modified line: Append accession ID to the output prefix to include it in the BAM file name
+        os.makedirs(output_subdir, exist_ok=True)
+
         outFileNamePrefix = os.path.join(output_subdir, accession_id + "_")
-        
         star_command = [
             star_path,
             '--runThreadN', '10',
             '--genomeDir', genome_dir,
-            '--readFilesIn'
-        ] + pair + [
+            '--readFilesIn'] + list(pair) + [
             '--outFileNamePrefix', outFileNamePrefix,
             '--outSAMtype', 'BAM', 'SortedByCoordinate'
         ]
-        
+
         logging.info(f"Running STAR alignment for {accession_id} with command: {' '.join(star_command)}")
         try:
             subprocess.run(star_command, check=True)
@@ -112,8 +112,8 @@ def align_reads(star_path, genome_dir, read_files, output_dir_base):
                 logging.error(f"No BAM file found for {accession_id} in {output_subdir}")
         except subprocess.CalledProcessError as e:
             logging.error(f"STAR alignment for {accession_id} failed: {e}")
-    
-    write_bam_manifest(bam_manifest_data, args.output_dir, args.metadata, args.condition)
+
+    write_bam_manifest(bam_manifest_data, output_dir_base, metadata, condition)
 
 
 if __name__ == "__main__":
@@ -124,13 +124,13 @@ if __name__ == "__main__":
     parser.add_argument("--genomeDir", required=True, help="Path to the STAR genome index directory")
     parser.add_argument("--readFilesIn", nargs='+', required=True, help="Paths to input FASTQ files")
     parser.add_argument("--output-dir", required=True, help="Base directory for saving the alignment results")
-    # Add optional arguments for metadata and condition
-    parser.add_argument("--metadata", required=False, default="DefaultMetadata", help="Metadata associated with the run")
-    parser.add_argument("--condition", required=False, default="DefaultCondition", help="Condition associated with the run")
+    parser.add_argument("--metadata", required=True, help="Metadata associated")
+    parser.add_argument("--condition", required=True, help="Condition associated")
+    parser.add_argument("--paired", action='store_true', help="Indicate if the reads are paired")
+    
     
     args = parser.parse_args()
-    
-    align_reads(args.star_path, args.genomeDir, args.readFilesIn, args.output_dir)
+    align_reads(args.star_path, args.genomeDir, args.readFilesIn, args.output_dir, args.paired, args.metadata, args.condition)
     
     logging.info("Alignment completed.")
 

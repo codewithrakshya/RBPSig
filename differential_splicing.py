@@ -31,6 +31,27 @@ def run_mesa_quant(manifest, output_prefix):
         print(f"mesa quant command executed successfully. Output files are prefixed with: {output_prefix}")
     except subprocess.CalledProcessError as e:
         print(f"Failed to execute mesa quant command: {e}")
+        
+def run_mesa_pairwise_fisher(output_prefix):
+    """Executes mesa pairwise with the specified output prefix."""
+    #the inclusionCounts and allClusters files are named following a specific pattern
+    inclusion_counts_file = f"{output_prefix}_inclusionCounts.tsv"
+    all_clusters_file = f"{output_prefix}_allClusters.tsv"
+    
+    command = [
+        'mesa', 'pairwise',
+        '--inclusionMESA', inclusion_counts_file,
+        '-c', all_clusters_file,
+        '-o', f"{output_prefix}_pairwiseFisherResults.tsv"
+    ]
+
+    try:
+        subprocess.run(command, check=True)
+        print("mesa pairwise command executed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to execute mesa pairwise command: {e}")
+
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run mesa bam_to_junc_bed and quant directly from command line arguments.")
@@ -42,9 +63,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # Always run bam_to_junc_bed
     run_mesa_bam_to_junc_bed(args.manifest, args.annotations, args.genome, args.output_prefix, args.n_threads)
 
 
     quant_manifest = f"{args.output_prefix}_manifest.txt"
     run_mesa_quant(quant_manifest, args.output_prefix)
+    run_mesa_pairwise_fisher(args.output_prefix)
