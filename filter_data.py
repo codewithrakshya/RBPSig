@@ -47,7 +47,7 @@ def filter_allPS(input_file, significant_clusters, output_file):
 def main(output_prefix):
     input_file = f"{output_prefix}_pairwiseFisherResults.tsv"
     manifest_file = f"{output_prefix}_manifest.txt"
-    output_file = f"{output_prefix}_filteredResults.tsv"
+    output_file = f"{output_prefix}_filteredPairwiseResults.tsv"
     allPS_file = f"{output_prefix}_allPS.tsv"
     allPS_output_file = f"{output_prefix}_filteredAllPS.tsv"
 
