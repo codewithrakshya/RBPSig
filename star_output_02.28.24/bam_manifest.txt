@@ -1,4 +1,0 @@
-SRR12801019	/private/groups/brookslab/rausharm/RBPSig/star_output_02.28.24/SRR12801019/Aligned.sortedByCoord.out.bam	metadata	condition
-SRR12801020	/private/groups/brookslab/rausharm/RBPSig/star_output_02.28.24/SRR12801020/Aligned.sortedByCoord.out.bam	metadata	condition
-SRR12801023	/private/groups/brookslab/rausharm/RBPSig/star_output_02.28.24/SRR12801023/Aligned.sortedByCoord.out.bam	metadata	condition
-SRR12801024	/private/groups/brookslab/rausharm/RBPSig/star_output_02.28.24/SRR12801024/Aligned.sortedByCoord.out.bam	metadata	condition

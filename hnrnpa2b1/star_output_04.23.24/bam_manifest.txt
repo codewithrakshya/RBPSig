@@ -1,0 +1,2 @@
+SRR4421417	/private/groups/brookslab/rausharm/RBPSig/hnrnpa2b1/star_output_04.23.24/SRR4421417/SRR4421417_Aligned.sortedByCoord.out.bam	shRNA	Reference
+SRR4421418	/private/groups/brookslab/rausharm/RBPSig/hnrnpa2b1/star_output_04.23.24/SRR4421418/SRR4421418_Aligned.sortedByCoord.out.bam	shRNA	Reference
